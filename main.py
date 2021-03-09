@@ -1,9 +1,15 @@
 import WorldGenerator
+import GameComponents
 
 generator = WorldGenerator.WorldGenderator()
 
-world = generator.generateWorld(10,10)
+world = generator.generateWorld(5,5, seed =0)
 
-world.printAllRooms(world.currentRoom)
+print("Please enter your name: ")
+name = input()
 
-#world.currentRoom.printRoomInfo()
+player = Player(name)
+player.position_x = world.currentRoom.position_x
+player.position_y = world.currentRoom.position_y
+
+#while(not world.currentRoom.isEnd):

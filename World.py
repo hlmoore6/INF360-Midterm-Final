@@ -30,6 +30,8 @@ class World:
         
 class Room:
 
+    NoneChance = 20
+
     #Constructor for Room
     #posx is the position x component
     #posy is the position y component
@@ -57,7 +59,8 @@ class Room:
         room = Room(posx, posy)
 
         random.seed(seed)
-        if random.randint(0,100) < 20:
+        
+        if random.randint(0,100) < Room.NoneChance:
             room.isNone = True
             return room
 
