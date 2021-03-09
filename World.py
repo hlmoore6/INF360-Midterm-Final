@@ -9,20 +9,25 @@ class World:
         self.worldWidth = width
         self.worldHeight = height
 
-    def printAllRooms(self, _currentRoom):
+    def printAllRooms(self, _currentRoom, parentRoom = None):
         _currentRoom.printRoomInfo()
-        if _currentRoom.northRoom is not None or not _currentRoom.northRoom.isNone:
-            self.printAllRooms(_currentRoom.northRoom)
 
-        if _currentRoom.southRoom is not None or not _currentRoom.southRoom.isNone:
-            self.printAllRooms(_currentRoom.northRoom)
-
-        if _currentRoom.westRoom is not None or not _currentRoom.westRoom.isNone:
-            self.printAllRooms(_currentRoom.northRoom)
+        if _currentRoom.northRoom is not None:
+            if not _currentRoom.northRoom.isNone and _currentRoom.northRoom != parentRoom:
+                self.printAllRooms(_currentRoom.northRoom, _currentRoom)
         
-        if _currentRoom.eastRoom is not None or not _currentRoom.eastRoom.isNone:
-            self.printAllRooms(_currentRoom.northRoom)
+        if _currentRoom.southRoom is not None:
+            if not _currentRoom.southRoom.isNone and _currentRoom.southRoom != parentRoom:
+                self.printAllRooms(_currentRoom.southRoom, _currentRoom)
 
+        if _currentRoom.westRoom is not None:
+            if not _currentRoom.westRoom.isNone and _currentRoom.westRoom != parentRoom:
+                self.printAllRooms(_currentRoom.westRoom, _currentRoom)
+        
+        if _currentRoom.eastRoom is not None:
+            if not _currentRoom.eastRoom.isNone and _currentRoom.eastRoom != parentRoom:
+                self.printAllRooms(_currentRoom.eastRoom, _currentRoom)
+        
 class Room:
 
     #Constructor for Room
@@ -44,6 +49,7 @@ class Room:
         print("Position X: " + str(self.position_x) + " Y: " + str(self.position_y))
         print("IsNone: " + str(self.isNone))
         print("IsEnd: " + str(self.isEnd))
+        print('\n', end='')
 
     #This generates a random room based on a seed
     @staticmethod
