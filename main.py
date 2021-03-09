@@ -2,4 +2,8 @@ import WorldGenerator
 
 generator = WorldGenerator.WorldGenderator()
 
-generator.generateWorld(10,10)
+world = generator.generateWorld(10,10)
+
+world.printAllRooms(world.currentRoom)
+
+world.currentRoom.printRoomInfo()
