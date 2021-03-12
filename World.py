@@ -49,11 +49,19 @@ class Room:
         self.westRoom = None
         self.eastRoom = None
 
+        self.enemy = None
+
     def printRoomInfo(self):
         print("Position X: " + str(self.position_x) + " Y: " + str(self.position_y))
         print("IsNone: " + str(self.isNone))
         print("IsEnd: " + str(self.isEnd))
         print('\n', end='')
+
+    def printEnemyInfo(self):
+        if self.enemy is not None:
+            self.enemy.printEnemyInfo()
+        else:
+            print("There is no enemy in the room!")
 
     #This generates a random room based on a seed
     @staticmethod
@@ -65,6 +73,9 @@ class Room:
         if random.randint(0,100) < Room.NoneChance:
             room.isNone = True
             return room
+        
+        room.enemy = GameComponents.Enemy()
+        room.enemy.randomizeEnemy(random.randint(0,100))
 
         return room
 

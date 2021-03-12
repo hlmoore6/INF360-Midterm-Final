@@ -10,10 +10,10 @@ class Weapon:
         self.critChance = critChance
     
     def getAttackDamage(self):
-        offset = random.uniform(0, maxOffset)
+        offset = random.uniform(0, self.maxOffset)
         attackDamage = self.damage + offset
         
-        if critChance < random.uniform(0,1):
+        if self.critChance < random.uniform(0,1):
             attackDamage *= 2
             print("You hit a critical hit!")
         
@@ -48,11 +48,18 @@ class Player:
 
         self.health = 100
 
+    def printPlayerInfo(self):
+        print("Name: " + self.name + "\n")
+        print("Health: " + self.health)
+        print("Weapon: " + self.weapon.name)
+        print("Weapon Description: " + self.weapon.description)
+        print('\n', end='')
+
     def takeDamage(self, damageAmount):
         self.health -= damageAmount
 
         if self.health <= 0:
-            die()
+            self.die()
             return
 
     def die(self):
