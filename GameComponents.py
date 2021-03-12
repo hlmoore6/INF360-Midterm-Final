@@ -1,5 +1,41 @@
 import random
 
+class Weapon:
+
+    def __init__(self, name, description, damage, maxOffset, critChance):
+        self.name = name
+        self.description = description
+        self.damage = damage
+        self.maxOffset = maxOffset
+        self.critChance = critChance
+    
+    def getAttackDamage(self):
+        offset = random.uniform(0, maxOffset)
+        attackDamage = self.damage + offset
+        
+        if critChance < random.uniform(0,1):
+            attackDamage *= 2
+            print("You hit a critical hit!")
+        
+        return attackDamage
+
+bronzeSword = Weapon("Bronze Sword", "Low tier sword.", 10, 5, 0.01)
+ironSword = Weapon("Iron Sword", "A good sword.", 20, 5, 0.02)
+steelSword = Weapon("Steel Sword", "A high class sword.", 35, 10, 0.05)
+
+magicWand = Weapon("Magic Wand", "A \"magic\" wand.", 30, 10, 0.1)
+excalibur = Weapon("Excalibur", "Pulled from a stone.", 40, 15, 0.15)
+
+bow = Weapon("Bow and Arrow", "A regular ranged bow and arrow.", 5, 20, 0.07)
+
+fists = Weapon("Fists", "Just regular old fists. Gets the job done.", 15, 10, 0.03)
+brick = Weapon("Brick", "Seems a bit crude don't you think? I mean a brick isn't even that good. Why are you using a brick?!?", 40, 10, 0.2)
+
+#Todo: Order these from worst to best so we can smartly randomize the chance of getting good items
+weapons = [
+    bronzeSword, ironSword, steelSword, magicWand, excalibur, bow, fists, brick
+]
+
 class Player:
 
     def __init__(self, name):
@@ -7,6 +43,21 @@ class Player:
 
         self.position_x = 0
         self.position_y = 0
+
+        self.weapon = bronzeSword
+
+        self.health = 100
+
+    def takeDamage(self, damageAmount):
+        self.health -= damageAmount
+
+        if self.health <= 0:
+            die()
+            return
+
+    def die(self):
+        print("Oh no you died!")
+        self = None
 
 class Enemy:
 
@@ -24,7 +75,7 @@ class Enemy:
     }
 
     minimumDamage = 5.0
-    maxDamaage = 30.0
+    maxDamage = 30.0
 
     def __init__(self):
         self.name = ""
@@ -51,13 +102,6 @@ class Enemy:
         self.name = list(Enemy.EnemyTitles.keys())[nameIndex]
         self.description = list(Enemy.EnemyTitles.values())[nameIndex]
         self.health = random.randint(50, 150)
-        self.damage = random.uniform(Enemy.minimumDamage, Enemy.maxDamaage)
+        self.damage = random.uniform(Enemy.minimumDamage, Enemy.maxDamage)
 
 
-class Weapon:
-
-    def __init__(self, name, damage):
-        self.name = name
-        self.damage = damage
-
-        self.description = ""
