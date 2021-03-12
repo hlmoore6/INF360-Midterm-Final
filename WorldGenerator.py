@@ -2,24 +2,34 @@ import random
 import World
 
 #This class generates levels for the game and keeps
-
-
 class WorldGenderator:
-    def generateWorld(self, width, height, seed=0):
-        self.worldSeed = seed
-        random.seed(self.worldSeed)
 
-        self.width = width
+    #This is the main function of World Generator
+    #This will take care of everything associated with the world generation
+    def generateWorld(self, width, height, seed=0):
+        self.worldSeed = seed #This sets the seed that we will use for randomization
+        random.seed(self.worldSeed) #This is where we set our random seed
+
+        #Setting the world dimensions
+        self.width = width 
         self.height = height
 
+        #Taken positions are used to keep track of what positions have already been taken
         self.takenPositions = list()
 
+        #Origin room is the first room we will spawn in
         self.originRoom = self.generateRoomLayout()
 
+        #CurrRoom is to keep track of the current room we are playing in
+        self.currRoom = self.originRoom
+
+        #This allows us to pick our end room (the goal room)
         self.pickEndRoom(random.randrange(0,100))
 
+        #This is where we initialize our world object
         world = World.World(self.originRoom, self.worldSeed, self.width, self.height)
 
+        #We finnaly return the world
         return world
 
     def generateRoomLayout(self):
@@ -39,23 +49,41 @@ class WorldGenderator:
     #level is current recursion iteration
     #maxLevel is the max number of recursions allowed
     def generateLocalRooms(self, room, level, maxLevel):
+        #This checks the current level iteration
         if level > maxLevel:
-            return
-
-        if room.isNone:
+            #If our level is greater than the max iteration then we return out of the function
             return
 
         #Generate North
 
+        #First we calculate the position the we are going to request to generate a room
         request_y = room.position_y+1
         request_x = room.position_x
+
+        #We check if the request is a valid position and if the position was already taken
         if request_y < self.height and request_y >= 0 and not self.checkTaken((request_x,request_y), self.takenPositions):
+            #If the position is good and we are able to generate a room
+
+            #Append this position to the list of taken positions
             self.takenPositions.append((request_x,request_y))
+
+            #We create a variable called newRoom and generate a Room from a random seed
             newRoom = World.Room.generateRoomFromSeed(random.randrange(0,100), request_x, request_y)
+            
+            #Set our current room's north room to our newRoom that we generated
             room.northRoom = newRoom
+            #Set the newRoom's south room to our current room
             newRoom.southRoom = room
+
+            #If our newRoom is not a None Room then we generate a new room from it
             if(not newRoom.isNone):
+                #
                 self.generateLocalRooms(newRoom, level + 1, maxLevel)
+
+
+        #The rest of this function is the same except with different parameters
+        #The rest of this function is the same except with different parameters
+        #The rest of this function is the same except with different parameters
 
         #Generate South
 
@@ -96,24 +124,75 @@ class WorldGenderator:
             if(not newRoom.isNone):
                 self.generateLocalRooms(newRoom, level + 1, maxLevel)
 
+    #This picks the end room
     def pickEndRoom(self, seed):
+        #Setting the random seed
         random.seed(seed)
-        
-        currRoom = self.originRoom
 
-        minDistance = (self.width + self.height)//2
+        #This is the minimum distance from the origin room
+        minDistance = (self.width + self.height)//4
 
-        originPos_x = self.originRoom.position_x
-        originPos_y = self.originRoom.position_y
-
+        #Loop to randomly pick end room
         while True:
-            distance = 
-            abs(currRoom.position_x - self.originRoom.position_x) + 
-            abs(currRoom.position_y - self.originRoom.position_y)
+            distance = abs(self.currRoom.position_x - self.originRoom.position_x) + abs(self.currRoom.position_y - self.originRoom.position_y)
+            #If we find a room that is acceptable to be an end Room
+            if distance >= minDistance:
+                #We give a 10% chance that a room will be picked as an end room
+                if random.randint(0,100) < 10:
+                    #If we pick the room to be the ending room then this will take our currRoom and make is the endRoom
+                    World.Room.generateEndingRoom(self.currRoom)
+                    #Reset our currRoom to the originRoom
+                    self.currRoom = self.originRoom           
+                    #Return out of the function and out of the loop         
+                    return
 
-            if distance => minDistance:
+            #Create variable nextRoom and set it to None
+            nextRoom = None
+
+            #While the nextRoom is None then keep trying to pick the next room
+            while nextRoom == None:
+                #If we don't pick a room then try another randomly selected one
+                dir = random.randint(0,4)
+
+                #Pick North
+                if(dir == 0):
+                    #Set the nextRoom to the current room's north room
+                    nextRoom = self.currRoom.northRoom
+                    
+                    #If the nextRoom is an acceptable room then...
+                    if nextRoom is not None and not nextRoom.isNone:
+                        #Set the currRoom into the northRoom
+                        self.currRoom = self.currRoom.northRoom
+                        #Break out of this first loop
+                        break
+
+                #This code is the same as the previous
+                #This code is the same as the previous
+                #This code is the same as the previous
+
+                #Pick south
+                if(dir == 1):
+                    nextRoom = self.currRoom.southRoom
+                    if nextRoom is not None:
+                        if not nextRoom.isNone:
+                            self.currRoom = self.currRoom.southRoom
+                            break
+
+                #Pick west
+                if(dir == 2):
+                    nextRoom = self.currRoom.westRoom
+                    if nextRoom is not None:
+                        if not nextRoom.isNone:
+                            self.currRoom = self.currRoom.westRoom
+                            break
                 
-
+                #Pick east
+                if(dir == 3):
+                    nextRoom = self.currRoom.eastRoom
+                    if nextRoom is not None:
+                        if not nextRoom.isNone:
+                            self.currRoom = self.currRoom.eastRoom
+                            break
 
 
     #Returns True if a position was taken

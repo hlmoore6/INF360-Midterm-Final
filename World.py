@@ -1,5 +1,7 @@
 import random
+import GameComponents
 
+#The world class handles the storage of Rooms and holds data about the world
 class World:
 
     def __init__(self, room, worldSeed, width, height):
@@ -67,11 +69,8 @@ class Room:
         return room
 
     @staticmethod
-    def generateEndingRoom(posx, posy):
-        room = Room(posx, posy)
+    def generateEndingRoom(room):
         room.isEnd = True
-
-        return room
 
     @staticmethod
     def generateStartingRoom(posx = 0, posy = 0):
