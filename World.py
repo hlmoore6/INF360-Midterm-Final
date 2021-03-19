@@ -29,7 +29,8 @@ class World:
         if _currentRoom.eastRoom is not None:
             if not _currentRoom.eastRoom.isNone and _currentRoom.eastRoom != parentRoom:
                 self.printAllRooms(_currentRoom.eastRoom, _currentRoom)
-        
+    
+    
 class Room:
 
     NoneChance = 20
@@ -62,6 +63,26 @@ class Room:
             self.enemy.printEnemyInfo()
         else:
             print("There is no enemy in the room!")
+
+    def printRoomOptions(self):
+        options = list()
+
+        if self.northRoom != None:
+            options.append("North")
+        
+        if self.southRoom != None:
+            options.append("South")
+
+        if self.westRoom != None:
+            options.append("West")
+        
+        if self.eastRoom != None:
+            options.append("East")
+
+        print("There is a room to the ", end='')
+        for dir in options:
+            print(dir + " ", end='')
+        print('\n', end='')
 
     #This generates a random room based on a seed
     @staticmethod

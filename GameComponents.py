@@ -18,6 +18,12 @@ class Weapon:
             print("You hit a critical hit!")
         
         return attackDamage
+    
+    def printWeaponStats(self):
+        print("Weapon Name: " + self.name)
+        print("Description: " + self.description)
+        print("Average Damage: " + str(self.damage))
+        print("Critical Hit Chance: " + str(100*self.critChance) + "%")
 
 bronzeSword = Weapon("Bronze Sword", "Low tier sword.", 10, 5, 0.01)
 ironSword = Weapon("Iron Sword", "A good sword.", 20, 5, 0.02)
@@ -39,7 +45,7 @@ weapons = [
 class Player:
 
     def __init__(self, name):
-        self.name = name
+        self.name = name or "Player"
 
         self.position_x = 0
         self.position_y = 0
@@ -49,22 +55,18 @@ class Player:
         self.health = 100
 
     def printPlayerInfo(self):
-        print("Name: " + self.name + "\n")
-        print("Health: " + self.health)
+        print("Player: " + self.name)
+        print("Health: " + str(self.health))
         print("Weapon: " + self.weapon.name)
         print("Weapon Description: " + self.weapon.description)
         print('\n', end='')
 
+    def printPlayerStats(self):
+        print("Health: " + str(self.health))
+        print('\n', end='')
+
     def takeDamage(self, damageAmount):
         self.health -= damageAmount
-
-        if self.health <= 0:
-            self.die()
-            return
-
-    def die(self):
-        print("Oh no you died!")
-        self = None
 
 class Enemy:
 
@@ -98,10 +100,22 @@ class Enemy:
         print("Damage: " + str(self.damage))
         print("MaxOffset: " + str(self.maxOffset))
         print('\n', end='')
+    
+    def printEnemyStats(self):
+        print("Name: " + self.name)
+        print("Description: " + self.description)
+        print("Health: " + str(self.health))
 
     def getDamage(self):
         offset = random.uniform(-self.maxOffset, self.maxOffset)
         return self.damage + offset
+
+    def takeDamage(self, damageAmount):
+        self.health -= damageAmount
+        
+        if self.health <= 0:
+            del self        
+        
 
     def randomizeEnemy(self, seed):
         random.seed(seed)
