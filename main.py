@@ -42,7 +42,16 @@ def attack():
             print("You found a weapon!\n")
             weaponIndex = random.randint(0, len(GameComponents.weapons))
             weaponPickup = GameComponents.weapons[weaponIndex]
+
+            print("Current Weapon")
+            player.weapon.printWeaponStats()
+
+            print('\n', end='')
+
+            print("Found Weapon")
             weaponPickup.printWeaponStats()
+
+            print('\n', end='')
 
             weaponInput = ""
             while weaponInput.lower() != "yes" and weaponInput.lower() != "no":
@@ -221,6 +230,7 @@ def gameLoop():
             # Stats
             elif actions[0] == "stats":
                 player.printPlayerInfo()
+                player.weapon.printWeaponStats()
 
             #Surroundings and Room
             elif actions[0] == "surroundings" or actions[0] == "room":
