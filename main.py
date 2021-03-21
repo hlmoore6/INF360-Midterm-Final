@@ -3,6 +3,7 @@ import GameComponents
 import GameInput
 import sys
 import random
+from World import *
 
 intro = """You somehow find yourself inside a dungeon.
 It's dark but you think that if you can just find the exit you can escape.
@@ -19,6 +20,10 @@ player = None
 
 def printSeed():
     print("This game's seed is: " + str(world.worldSeed))
+
+def win():
+    print("The room you enter has a chest in the center full of treasure!")
+    print("Congratulations you've won!")
 
 def attack():
     global player
@@ -67,26 +72,20 @@ def attack():
     player.printPlayerStats()
 
 
-def moveRoom(dir, override = False):
-    if world.currentRoom.enemy != None and not override:
+def moveRoom(dir):
+    if world.currentRoom.enemy != None:
         print("You cannot leave the room until the enemy is dead.")
         return
 
-    nextRoom = None
-    if dir == 0:
-        nextRoom = world.currentRoom.northRoom
-    elif dir == 1:
-        nextRoom = world.currentRoom.southRoom
-    elif dir == 2:
-        nextRoom = world.currentRoom.westRoom
-    else:
-        nextRoom = world.currentRoom.eastRoom
+    nextRoom = world.getRoomFromDirection(dir)
 
-    if nextRoom == None:
+    if not world.moveRoom(nextRoom):
         print("There is no room in that direction. Please try again")
         return
 
-    world.currentRoom = nextRoom
+    if world.currentRoom.isEnd:
+        win()
+        return
     
     if world.currentRoom.enemy != None:
         print("There's a " + world.currentRoom.enemy.name + " in the room!")
@@ -95,14 +94,39 @@ def moveRoom(dir, override = False):
 
 # run receives a string as input an atempts a run
 def run(dir):
+    global player
+
+    nextRoom = world.getRoomFromDirection(dir)
+
+    if not world.checkAvailability(nextRoom):
+        print("There is no room in that direction")
+        return
+
     runChance = 10
 
-    if runChance < random.randint(0,100):
+    if runChance > random.randint(0,100):
         print("You got away but the enemy is still there!")
-        moveRoom(dir, True)
+        world.moveRoom(nextRoom)
+        world.currentRoom.printRoomOptions()
+       
+        if world.currentRoom.enemy != None:
+            print("There's a " + world.currentRoom.enemy.name + " in the room!")
+       
         return
     
     print("Sadly you did not escape")
+
+    enemyAttackDamage = world.currentRoom.enemy.getDamage()
+    player.takeDamage(enemyAttackDamage)
+
+    print("The enemy does " + str(enemyAttackDamage) + " damage to you.")
+    
+    if player.health < 0:
+        print("Oh no you died!")
+        player = None
+        return
+
+    player.printPlayerStats()
 
 
 def printRoom():
@@ -122,8 +146,9 @@ def undefinedInput():
 
 def gameLoop():
     global player
+    global world
 
-    while player != None:
+    while player != None and not world.currentRoom.isEnd:
         gameInputText = input("What will you do? >: ")
         actions = GameInput.parseText(gameInputText)
         
@@ -165,7 +190,7 @@ def gameLoop():
                     continue
 
                 if world.currentRoom.enemy == None:
-                    print("There is no need to run!")
+                    print("There is no need to run!\n")
                     continue
                 
                 if actions[1] != "north" and actions[1] != "south" and actions[1] != "west" and actions[1] != "east":

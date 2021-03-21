@@ -44,18 +44,7 @@ class WorldGenderator:
         
         return startingRoom
 
-    #This function recursivley calls itself to generate rooms adjacent to itself
-    #room is the current room
-    #level is current recursion iteration
-    #maxLevel is the max number of recursions allowed
-    def generateLocalRooms(self, room, level, maxLevel):
-        #This checks the current level iteration
-        if level > maxLevel:
-            #If our level is greater than the max iteration then we return out of the function
-            return
-
-        #Generate North
-
+    def generateNorth(self, room):
         #First we calculate the position the we are going to request to generate a room
         request_y = room.position_y+1
         request_x = room.position_x
@@ -64,65 +53,91 @@ class WorldGenderator:
         if request_y < self.height and request_y >= 0 and not self.checkTaken((request_x,request_y), self.takenPositions):
             #If the position is good and we are able to generate a room
 
-            #Append this position to the list of taken positions
-            self.takenPositions.append((request_x,request_y))
-
             #We create a variable called newRoom and generate a Room from a random seed
             newRoom = World.Room.generateRoomFromSeed(random.randrange(0,100), request_x, request_y)
             
+            #If the room we generated is None then we return
+            if newRoom == None:
+                return None
+
+            #Append this position to the list of taken positions
+            self.takenPositions.append((request_x,request_y))
+
             #Set our current room's north room to our newRoom that we generated
             room.northRoom = newRoom
             #Set the newRoom's south room to our current room
             newRoom.southRoom = room
 
-            #If our newRoom is not a None Room then we generate a new room from it
-            if(not newRoom.isNone):
-                #
-                self.generateLocalRooms(newRoom, level + 1, maxLevel)
-
-
-        #The rest of this function is the same except with different parameters
-        #The rest of this function is the same except with different parameters
-        #The rest of this function is the same except with different parameters
-
-        #Generate South
-
+            #Return the newly created room
+            return newRoom
+    
+    #The rest of these functions work as the previous except with different directions
+    def generateSouth(self, room):
         request_y = room.position_y-1
         request_x = room.position_x
 
         if request_y < self.height and request_y >= 0 and not self.checkTaken((request_x,request_y), self.takenPositions):
             self.takenPositions.append((request_x,request_y))
             newRoom = World.Room.generateRoomFromSeed(random.randrange(0,100), request_x, request_y)
+            if newRoom == None:
+                return None
             room.southRoom = newRoom
             newRoom.northRoom = room
-            if(not newRoom.isNone):
-                self.generateLocalRooms(newRoom, level + 1, maxLevel)
+            return newRoom
 
-        #Generate West
-
+    def generateWest(self, room):
         request_y = room.position_y
         request_x = room.position_x - 1
 
         if request_x < self.width and request_x >= 0 and not self.checkTaken((request_x,request_y), self.takenPositions):
             self.takenPositions.append((request_x,request_y))
             newRoom = World.Room.generateRoomFromSeed(random.randrange(0,100), request_x, request_y)
+            if newRoom == None:
+                return None
             room.westRoom = newRoom
             newRoom.eastRoom = room
-            if(not newRoom.isNone):
-                self.generateLocalRooms(newRoom, level + 1, maxLevel)
+            return newRoom
 
-        #Generate East
-
+    def generateEast(self, room):
         request_y = room.position_y
         request_x = room.position_x + 1
 
         if request_x < self.width and request_x >= 0 and not self.checkTaken((request_x,request_y), self.takenPositions):
             self.takenPositions.append((request_x,request_y))
             newRoom = World.Room.generateRoomFromSeed(random.randrange(0,100), request_x, request_y)
+            if newRoom == None:
+                return None
             room.eastRoom = newRoom
             newRoom.westRoom = room
-            if(not newRoom.isNone):
-                self.generateLocalRooms(newRoom, level + 1, maxLevel)
+            return newRoom
+
+    #This function recursivley calls itself to generate rooms adjacent to itself
+    #room is the current room
+    #level is current recursion iteration
+    #maxLevel is the max number of recursions allowed
+    def generateLocalRooms(self, room, level, maxLevel):
+        #This checks the current level iteration
+        if level > maxLevel or room == None:
+            #If our level is greater than the max iteration then we return out of the function
+            return
+
+        newRoom = self.generateNorth(room)
+        if newRoom != None:
+            self.generateLocalRooms(newRoom, level + 1, maxLevel)
+       
+        newRoom = self.generateSouth(room)
+        if newRoom != None:
+            self.generateLocalRooms(newRoom, level + 1, maxLevel)
+        
+        newRoom = self.generateWest(room)
+        if newRoom != None:
+            self.generateLocalRooms(newRoom, level + 1, maxLevel)
+        
+        newRoom = self.generateEast(room)
+        if newRoom != None:
+            self.generateLocalRooms(newRoom, level + 1, maxLevel)
+
+        
 
     #This picks the end room
     def pickEndRoom(self, seed):
@@ -160,7 +175,7 @@ class WorldGenderator:
                     nextRoom = self.currRoom.northRoom
                     
                     #If the nextRoom is an acceptable room then...
-                    if nextRoom is not None and not nextRoom.isNone:
+                    if nextRoom != None:
                         #Set the currRoom into the northRoom
                         self.currRoom = self.currRoom.northRoom
                         #Break out of this first loop
@@ -174,7 +189,7 @@ class WorldGenderator:
                 if(dir == 1):
                     nextRoom = self.currRoom.southRoom
                     if nextRoom is not None:
-                        if not nextRoom.isNone:
+                        if nextRoom != None:
                             self.currRoom = self.currRoom.southRoom
                             break
 
@@ -182,7 +197,7 @@ class WorldGenderator:
                 if(dir == 2):
                     nextRoom = self.currRoom.westRoom
                     if nextRoom is not None:
-                        if not nextRoom.isNone:
+                        if nextRoom != None:
                             self.currRoom = self.currRoom.westRoom
                             break
                 
@@ -190,7 +205,7 @@ class WorldGenderator:
                 if(dir == 3):
                     nextRoom = self.currRoom.eastRoom
                     if nextRoom is not None:
-                        if not nextRoom.isNone:
+                        if nextRoom != None:
                             self.currRoom = self.currRoom.eastRoom
                             break
 

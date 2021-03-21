@@ -13,7 +13,7 @@ class Weapon:
         offset = random.uniform(0, self.maxOffset)
         attackDamage = self.damage + offset
         
-        if self.critChance < random.uniform(0,1):
+        if self.critChance > random.uniform(0,1):
             attackDamage *= 2
             print("You hit a critical hit!")
         
@@ -62,8 +62,9 @@ class Player:
         print('\n', end='')
 
     def printPlayerStats(self):
+        print("Player Stats")
         print("Health: " + str(self.health))
-        print('\n', end='')
+        #print('\n', end='')
 
     def takeDamage(self, damageAmount):
         self.health -= damageAmount
@@ -99,7 +100,6 @@ class Enemy:
         print("Health: " + str(self.health))
         print("Damage: " + str(self.damage))
         print("MaxOffset: " + str(self.maxOffset))
-        print('\n', end='')
     
     def printEnemyStats(self):
         print("Name: " + self.name)

@@ -29,7 +29,41 @@ class World:
         if _currentRoom.eastRoom is not None:
             if not _currentRoom.eastRoom.isNone and _currentRoom.eastRoom != parentRoom:
                 self.printAllRooms(_currentRoom.eastRoom, _currentRoom)
+
+    def getRoomFromDirection(self, dir):
+        if dir == 0:
+            return self.currentRoom.northRoom
+        elif dir == 1:
+            return self.currentRoom.southRoom
+        elif dir == 2:
+            return self.currentRoom.westRoom
+        elif dir == 3:
+            return self.currentRoom.eastRoom
+
+        if dir == "north":
+            return self.currentRoom.northRoom
+        elif dir == "south":
+            return self.currentRoom.southRoom
+        elif dir == "west":
+            return self.currentRoom.westRoom
+        elif dir == "east":
+            return self.currentRoom.eastRoom
+        
+        return None
+
+    @staticmethod
+    def checkAvailability(room):
+        if room == None:
+            return False
+        
+        return True
     
+    def moveRoom(self, room):
+        if not World.checkAvailability(room):
+            return False
+        
+        self.currentRoom = room
+        return True
     
 class Room:
 
@@ -39,7 +73,6 @@ class Room:
     #posx is the position x component
     #posy is the position y component
     def __init__(self, posx, posy):
-        self.isNone = False
         self.isEnd = False
 
         self.position_x = posx
@@ -54,7 +87,6 @@ class Room:
 
     def printRoomInfo(self):
         print("Position X: " + str(self.position_x) + " Y: " + str(self.position_y))
-        print("IsNone: " + str(self.isNone))
         print("IsEnd: " + str(self.isEnd))
         print('\n', end='')
 
@@ -92,8 +124,7 @@ class Room:
         random.seed(seed)
         
         if random.randint(0,100) < Room.NoneChance:
-            room.isNone = True
-            return room
+            return None
         
         room.enemy = GameComponents.Enemy()
         room.enemy.randomizeEnemy(random.randint(0,100))
