@@ -116,7 +116,7 @@ class Room:
         #If there is an enemy
         if self.enemy is not None:
             #Print the enemy's info
-            self.enemy.printEnemyInfo()
+            self.enemy.printEnemyStats()
             return #Return out of function
         
         #Otherwise there is no enemy

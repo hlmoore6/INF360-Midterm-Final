@@ -26,7 +26,7 @@ player = None
 #Prints our current world seed
 def printSeed():
     print("This game's seed is: " + str(world.worldSeed))
-    print("This games's dimensions are (width) " + str(world.worldWidth) + ", (Height) " + str(world.worldHeight)) 
+    print("This games's dimensions are (" + str(world.worldWidth) + ", " + str(world.worldHeight) + ") (Width, Height)") 
 
 #This function prints out the text when a player wins
 def printWinText():
@@ -56,12 +56,12 @@ def attack():
         player.health = 100
 
         #This part of the code randomly generates a weapon drop
-        itemChance = 25 #itemChance is the chance that a weapon will spawn
+        itemChance = 35 #itemChance is the chance that a weapon will spawn
         #if itemChance is greater than a random integer between 0-100
         if itemChance > random.randint(0,100): #Then generate a random weapon
             print("You found a weapon!\n")
             #weaponIndex is used to pick a random weapon
-            weaponIndex = random.randint(0, len(GameComponents.weapons))
+            weaponIndex = random.randint(0, len(GameComponents.weapons) - 1)
             #weaponPickup is the randomized weapon we chose from the list of weapons
             weaponPickup = GameComponents.weapons[weaponIndex]
 
@@ -91,8 +91,8 @@ def attack():
                 elif weaponInput.lower() == "no":
                     print("You discard the weapon you found and keep your old one.")
             
-            #Because the enemy is dead there is no need to do anything else in this function
-            return
+        #Because the enemy is dead there is no need to do anything else in this function
+        return
     
     #If we reach this code then the enemy is still alive
     print("The enemy is still alive and it attacks!")
@@ -402,9 +402,19 @@ def userCreateWorld():
     
     #If the input was empty then randomize seed
     if worldSeed == "":
-        #We use a random worldSeed of the current time
-        worldSeed = time.time()
-    
+        #We seed random with the current time
+        random.seed(int(time.time()))
+        #Then we generate the seed from random that goes from 0 to the max size of an integer
+        worldSeed = random.randint(0, sys.maxsize)
+
+    #This is to make sure that if an integer was inputed that it stays an integer data type
+    #If it's not an integer then random.seed() will not produce the same randomness
+    try: #Try block
+        intSeed = int(worldSeed) #Try to convert seed into an integer
+        worldSeed = intSeed #Set the worldSeed equal to the integer conversion
+    except: #If there's an exception
+        pass #Just continue
+
     #Generate world using the variable we gather
     world = generator.generateWorld(worldWidth, worldHeight, seed=worldSeed)
 

@@ -108,7 +108,7 @@ class Enemy:
 
     #Min and max damages achievable by an enemy
     minimumDamage = 5.0
-    maxDamage = 30.0
+    maxDamage = 20.0
 
     #Constructor (everything is set to default values)
     def __init__(self):
@@ -116,7 +116,7 @@ class Enemy:
         self.description = ""
         self.health = 0
         self.damage = 0
-        self.maxOffset = 5.0
+        self.maxOffset = 3.0
 
     #This function prints out all information about the enemy
     def printEnemyInfo(self):
