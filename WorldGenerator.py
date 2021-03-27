@@ -39,8 +39,12 @@ class WorldGenderator:
         #Add the starting room positions to the takenPositions tracker
         self.takenPositions.append((startingRoom.position_x, startingRoom.position_y))
 
+        #Max recursion is how many times the function below will be able to call itself per call
+        #The value of max recursion is 3/4 the average of width and hight
+        maxRecursion = ((self.width + self.height)//2) * 0.75
+        
         #This function recursivley calls itself to generate rooms adjacent to itself
-        self.generateLocalRooms(startingRoom, 0, 5)
+        self.generateLocalRooms(startingRoom, 0, maxRecursion)
         
         return startingRoom
 

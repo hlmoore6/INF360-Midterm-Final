@@ -3,7 +3,7 @@ import re
 #This variable is just the help menu
 helpText = """Help Menu-
 
-To move around the world just type where you want to go. It can even be a descriptive as you want!
+To move around the world just type where you want to go. It can even be as descriptive as you want!
 To look at your stats just type \"Stats\".
 To get your bearings and see what rooms surrond you type \"Surroundings\" or \"Room\".
 To go into another room just type to direction you want to go ex. \"North\".
@@ -19,7 +19,7 @@ To read these instructions again just type \"Help\"
 #It's also in an order of precedence
 keyWords = [
     "help", "exit", "quit", "seed",
-    "attack","run",
+    "attack", "fight" ,"run",
     "north","south","west","east",
     "enemy","stats","surroundings","room"
 ]

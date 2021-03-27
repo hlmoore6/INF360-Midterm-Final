@@ -265,7 +265,7 @@ def gameLoop():
                 printSeed()
 
             # Attack
-            elif actions[0] == "attack":
+            elif actions[0] == "attack" or actions[0] == "fight":
                 #If there is no enemy in the room
                 if world.currentRoom.enemy == None:
                     print("There is not enemy in the room to attack!") #Notify player
@@ -365,6 +365,7 @@ def userCreateWorld():
     #while the worldWidth is not defined
     while worldWidth == None:
         #Get input for world width
+        
         worldWidth = input("Please enter a map WIDTH (press enter for a width of 5) >: ")
 
         #If the input is empty then default to 5
@@ -381,10 +382,12 @@ def userCreateWorld():
             print("Sorry I didn't understand that. Please try again")
             #undefine worldWidth so we loop again
             worldWidth = None 
+    
+    print('\n', end='')
 
     #We do the same procedure for world height as world width
     while worldHeight == None:
-        worldHeight = input("Please enter a map HEIGHT (press enter for a width of 5) >: ")
+        worldHeight = input("Please enter a map HEIGHT (press enter for a height of 5) >: ")
 
         if worldHeight == "":
             worldHeight = 5
@@ -396,6 +399,7 @@ def userCreateWorld():
             print("Sorry I didn't understand that. Please try again")
             worldHeight = None 
 
+    print('\n', end='')
 
     #Get input for worldSeed
     worldSeed = input("Please enter a seed for the map (press enter for a random seed) >: ")
