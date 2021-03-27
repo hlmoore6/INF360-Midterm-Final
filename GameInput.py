@@ -1,3 +1,7 @@
+# INF360 - Programming in Python
+# Hunter Moore
+# Midterm Project
+
 import re
 
 #This variable is just the help menu

@@ -1,3 +1,7 @@
+# INF360 - Programming in Python
+# Hunter Moore
+# Midterm Project
+
 from WorldGenerator import *
 import GameComponents
 import GameInput
