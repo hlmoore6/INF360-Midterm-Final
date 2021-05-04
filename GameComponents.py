@@ -2,7 +2,15 @@
 # Hunter Moore
 # Midterm Project
 
-import random
+try:
+    import logging
+except:
+    print("Could not import logging. Something is terrible wrong!")
+
+try:
+    import random
+except:
+    logging.critical("Could not import random. Please install the random module.")
 
 #This class stores information about a weapon
 class Weapon:
@@ -18,12 +26,12 @@ class Weapon:
     #This function will randomly generate a damage value based on the weapon
     def getAttackDamage(self):
         #Offset will store the offset that we will use for our damage
-        offset = random.uniform(-self.maxOffset, self.maxOffset)
+        offset = random.randint(-self.maxOffset, self.maxOffset)
         #Attack damage is the base damage plus the offset
         attackDamage = self.damage + offset
         
         #If our critChance is greater than a number between 0-1
-        if self.critChance > random.uniform(0,1):
+        if self.critChance > random.randint(0,1):
             #Our damage is doubled
             attackDamage *= 2
             #Notify player that a critical hit happened
@@ -139,7 +147,7 @@ class Enemy:
     #This function returns a randomly generated damage amount
     def getDamage(self):
         #Offset is a random number between -max and max
-        offset = random.uniform(-self.maxOffset, self.maxOffset)
+        offset = random.randint(-self.maxOffset, self.maxOffset)
         #Return damage plus the generated offset
         return self.damage + offset
 
@@ -169,6 +177,6 @@ class Enemy:
         self.health = random.randint(25, 150)
         
         #Randomize the damage from minDamage to maxDamage
-        self.damage = random.uniform(Enemy.minimumDamage, Enemy.maxDamage)
+        self.damage = random.randint(Enemy.minimumDamage, Enemy.maxDamage)
 
 
