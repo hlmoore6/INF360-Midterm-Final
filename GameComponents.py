@@ -11,14 +11,14 @@ class Weapon:
     def __init__(self, name, description, damage, maxOffset, critChance):
         self.name = name #Weapon name
         self.description = description #Weapon description
-        self.damage = damage #Weapon damage
+        self.damage = int(damage) #Weapon damage
         self.maxOffset = maxOffset #Max offset that the damage can deviate
         self.critChance = critChance #Critical hit chance of the weapon
     
     #This function will randomly generate a damage value based on the weapon
     def getAttackDamage(self):
         #Offset will store the offset that we will use for our damage
-        offset = random.uniform(-self.maxOffset, self.maxOffset)
+        offset = random.randint(-self.maxOffset, self.maxOffset)
         #Attack damage is the base damage plus the offset
         attackDamage = self.damage + offset
         
@@ -111,16 +111,16 @@ class Enemy:
     }
 
     #Min and max damages achievable by an enemy
-    minimumDamage = 5.0
-    maxDamage = 20.0
+    minimumDamage = 5
+    maxDamage = 20
 
     #Constructor (everything is set to default values)
     def __init__(self):
         self.name = ""
         self.description = ""
         self.health = 0
-        self.damage = 0
-        self.maxOffset = 3.0
+        self.damage = int(0)
+        self.maxOffset = 5
 
     #This function prints out all information about the enemy
     def printEnemyInfo(self):
@@ -139,7 +139,7 @@ class Enemy:
     #This function returns a randomly generated damage amount
     def getDamage(self):
         #Offset is a random number between -max and max
-        offset = random.uniform(-self.maxOffset, self.maxOffset)
+        offset = random.randint(-self.maxOffset, self.maxOffset)
         #Return damage plus the generated offset
         return self.damage + offset
 
@@ -169,6 +169,6 @@ class Enemy:
         self.health = random.randint(25, 150)
         
         #Randomize the damage from minDamage to maxDamage
-        self.damage = random.uniform(Enemy.minimumDamage, Enemy.maxDamage)
+        self.damage = random.randint(Enemy.minimumDamage, Enemy.maxDamage)
 
 

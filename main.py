@@ -27,6 +27,7 @@ world = None
 #Player variable that stores information about the player
 player = None
 
+
 #Prints our current world seed
 def printSeed():
     print("This game's seed is: " + str(world.worldSeed))
@@ -62,7 +63,7 @@ def attack():
         #This part of the code randomly generates a weapon drop
         itemChance = 35 #itemChance is the chance that a weapon will spawn
         #if itemChance is greater than a random integer between 0-100
-        if itemChance > random.randint(0,100): #Then generate a random weapon
+        if itemChance > randint(0,100): #Then generate a random weapon
             print("You found a weapon!\n")
             #weaponIndex is used to pick a random weapon
             weaponIndex = random.randint(0, len(GameComponents.weapons) - 1)
