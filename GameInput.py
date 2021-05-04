@@ -1,9 +1,16 @@
 # INF360 - Programming in Python
 # Hunter Moore
 # Midterm Project
+try:
+    import logging
+except:
+    print("Could not import logging. Something is terrible wrong!")
 
-import re
-
+try:
+    import re
+except:
+    logging.critical("Could not import the module re. Please make sure the regex module is installed")
+    
 #This variable is just the help menu
 helpText = """Help Menu-
 

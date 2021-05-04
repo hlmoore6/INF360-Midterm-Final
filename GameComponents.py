@@ -2,7 +2,15 @@
 # Hunter Moore
 # Midterm Project
 
-import random
+try:
+    import logging
+except:
+    print("Could not import logging. Something is terrible wrong!")
+
+try:
+    import random
+except:
+    logging.critical("Could not import random. Please install the random module.")
 
 #This class stores information about a weapon
 class Weapon:
@@ -23,7 +31,7 @@ class Weapon:
         attackDamage = self.damage + offset
         
         #If our critChance is greater than a number between 0-1
-        if self.critChance > random.uniform(0,1):
+        if self.critChance > random.randint(0,1):
             #Our damage is doubled
             attackDamage *= 2
             #Notify player that a critical hit happened

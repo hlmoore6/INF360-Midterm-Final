@@ -2,15 +2,29 @@
 # Hunter Moore
 # Midterm Project
 
-import random
-import World
+try:
+    import logging
+except:
+    print("Could not import logging. Something is terrible wrong!")
 
+try:
+    import random
+except:
+    logging.critical("Could not import random. Please install the random module")
+
+try:
+    import World
+except:
+    logging.critical("Could not import module World.py. Please make sure World.py is in the same directroy as WorldGenerator.py")
 #This class generates levels for the game and keeps
 class WorldGenderator:
 
     #This is the main function of World Generator
     #This will take care of everything associated with the world generation
     def generateWorld(self, width, height, seed=0):
+        #Debug statment to let the developer know what the generation parameters are
+        logging.debug("Generating a world with a width of " + str(width) + " and a height of " + str(height) + " and a seed of " + str(seed))
+        
         self.worldSeed = seed #This sets the seed that we will use for randomization
         random.seed(self.worldSeed) #This is where we set our random seed
 
@@ -30,6 +44,7 @@ class WorldGenderator:
         #This allows us to pick our end room (the goal room)
         self.pickEndRoom(random.randrange(0,100))
 
+        logging.debug("Number of rooms generated: " + str(len(self.takenPositions)))
         #This is where we initialize our world object
         world = World.World(self.originRoom, self.worldSeed, self.width, self.height)
 
