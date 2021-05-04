@@ -15,38 +15,38 @@ try:
     logging.basicConfig(level=logging.DEBUG, filename="Log.txt",
     format='%(asctime)s -  %(levelname)s -  %(message)s')
 
-except:
+except ImportError():
     print("Error importing logging library.")
 
 try:
     from WorldGenerator import *
-except:
+except ImportError():
     logging.critical("Could not import WorldGenerator. Please include WorldGenerator.py in this directory.")
 
 try:
     import GameComponents
-except:
+except ImportError():
     logging.critical("Could not import GameComponents. Please include GameComponents.py in this directory.")
 
 try:
     import GameInput
-except:
+except ImportError():
     logging.critical("Could not import GameInput. Please include GameInput.py in this directory.")
 
 try:
     import sys
-except:
+except ImportError():
     logging.critical("Could not import sys. Please make sure python has access to sys.")
 import random
 
 try:
     from World import *
-except:
+except ImportError():
     logging.critical("Could not import World. Please include World.py in this directory.")
 
 try:
     import time
-except:
+except ImportError():
     logging.critical("Could not import time. Please make sure python has access to time.")
     
 #This variable stores the intro text

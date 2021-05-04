@@ -3,12 +3,12 @@
 # Midterm Project
 try:
     import logging
-except:
+except ImportError():
     print("Could not import logging. Something is terrible wrong!")
 
 try:
     import re
-except:
+except ImportError():
     logging.critical("Could not import the module re. Please make sure the regex module is installed")
     
 #This variable is just the help menu

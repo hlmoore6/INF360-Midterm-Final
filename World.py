@@ -9,12 +9,12 @@ except:
 
 try:
     import random
-except:
+except ImportError():
     logging.critical("Could not import random. Please install the random module.")
 
 try:
     import GameComponents
-except:
+except ImportError():
     logging.critical("Could not import GameComponents. Make sure that GameComponents.py is in World.py directory")
 
 #The world class handles the storage of Rooms and holds data about the world

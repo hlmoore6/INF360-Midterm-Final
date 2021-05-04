@@ -4,17 +4,17 @@
 
 try:
     import logging
-except:
+except ImportError():
     print("Could not import logging. Something is terrible wrong!")
 
 try:
     import random
-except:
+except ImportError():
     logging.critical("Could not import random. Please install the random module")
 
 try:
     import World
-except:
+except ImportError():
     logging.critical("Could not import module World.py. Please make sure World.py is in the same directroy as WorldGenerator.py")
 #This class generates levels for the game and keeps
 class WorldGenderator:

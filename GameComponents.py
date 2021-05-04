@@ -4,12 +4,12 @@
 
 try:
     import logging
-except:
+except ImportError():
     print("Could not import logging. Something is terrible wrong!")
 
 try:
     import random
-except:
+except ImportError():
     logging.critical("Could not import random. Please install the random module.")
 
 #This class stores information about a weapon
