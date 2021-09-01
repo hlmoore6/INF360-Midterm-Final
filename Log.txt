@@ -10,3 +10,5 @@
 2021-05-04 15:07:07,356 -  CRITICAL -  Could not import GameInput. Please include GameInput.py in this directory.
 2021-05-04 15:07:12,317 -  DEBUG -  Generating a world with a width of 5 and a height of 5 and a seed of 6590053385595094145
 2021-05-04 15:07:12,318 -  DEBUG -  Number of rooms generated: 24
+2021-05-04 15:13:10,518 -  DEBUG -  Generating a world with a width of 20 and a height of 20 and a seed of 7489286921357023966
+2021-05-04 15:13:10,521 -  DEBUG -  Number of rooms generated: 132
